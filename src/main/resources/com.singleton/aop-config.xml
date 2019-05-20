@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+    <bean id="loggerAspect" class="org.springframework.aop.LogAspect" lazy-init="true"/>
+
+    <bean id="testBean-1" class="singleton.init.TestBean" lazy-init="true">
+        <property name="number" value="10086"/>
+    </bean>
+
+    <!--<bean id="testBean-2" class="singleton.init.TestBean" lazy-init="true">-->
+        <!--<property name="number" value="1008611"/>-->
+        <!--<property name="testBean" ref="testBean-1"/>-->
+    <!--</bean>-->
+
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="loggerCutpoint"-->
+                      <!--expression=-->
+                              <!--"execution(* singleton.init.*.*(..)) "/>-->
+
+        <!--<aop:aspect id="logAspect" ref="loggerAspect">-->
+            <!--<aop:after pointcut-ref="loggerCutpoint" method="log"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+    <aop:config >
+        <aop:aspect id="logAspect" ref="loggerAspect">
+            <aop:pointcut id="loggerCutpoint" expression="execution(* org.springframework.aop.AopInterface.*(..))"/>
+            <aop:before method="log" pointcut-ref="loggerCutpoint"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
